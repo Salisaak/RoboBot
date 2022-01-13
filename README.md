@@ -21,7 +21,7 @@ public class Salam extends Robot
         // setColors(Color.blue,Color.blue,Color.grey,Color.red,Color.green); // body,gun,radar
         // Robot main loop
 		
-		setBodyColor(new Color(212, 185, 53));
+		setBodyColor(new Color(255, 255, 255));
         setGunColor(new Color(120, 25, 41));
         setRadarColor(new Color(44, 199, 36));
         setScanColor(new Color(214, 0, 247));
@@ -34,9 +34,9 @@ public class Salam extends Robot
             turnRight(angle);
             ahead(distance);
             ahead(100);
-            turnGunRight(90);
+            turnGunRight(45);
             back(100);
-            turnGunRight(90);
+            turnGunRight(45);
         }
     }
 
@@ -47,22 +47,16 @@ public class Salam extends Robot
         // Replace the next line with any behavior you would like
         double distance = e.getDistance();
 
-        if(distance<200)
-        {
-           fire(3.5);
-        }
-        else if(distance<500)
-        {
-           fire(2.5);
-        }
-        else if(distance<800)
-        {
-           fire(1.5);
-        }
-        else
-        {
-           fire(0.5);
-        }
+       if(distance > 800) //this conditions adjust the fire force according the distance of the scanned robot.
+		fire(5);
+    else if(distance > 600 && distance <= 800)
+        fire(4);
+    else if(distance > 400 && distance <= 600)
+        fire(3);
+    else if(distance > 200 && distance <= 400)
+        fire(2);
+    else if(distance < 200)
+        fire(1);
     }
 
     /**
@@ -76,9 +70,10 @@ public class Salam extends Robot
     /**
      * onHitWall: What to do when you hit a wall
      */
-    public void onHitWall(HitWallEvent e) {
-        // Replace the next line with any behavior you would like
-        back(20);
-    }   
+   public void onHitWall(HitWallEvent e){
+    double bearing = e.getBearing(); //get the bearing of the wall
+    turnRight(-bearing); //This isn't accurate but release your robot.
+    ahead(100); //The robot goes away from the wall.
+}
 }
 ```
